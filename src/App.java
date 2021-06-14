@@ -17,20 +17,25 @@ public class App extends Canvas implements Runnable, MouseListener {
 	public static int life;
 	public static int score;
 	public static int pos_x, pos_y;
-	public static boolean clicked = false;
-	public static boolean running = true;
+	public static boolean clicked;
+	public static boolean running;
 	public Spawner spawner;
 
 	public App() {
+
 		life = 100;
 		score = 0;
+		clicked = false;
+		running = true;
 		Dimension dimension = new Dimension(WIDTH, HEIGHT);
 		this.setPreferredSize(dimension);
 		this.addMouseListener(this);
 		spawner = new Spawner(); 
+
 	}
 
 	public void update() {
+
 		if (running) {
 			spawner.update();
 			if (life <= 0) {
@@ -38,9 +43,11 @@ public class App extends Canvas implements Runnable, MouseListener {
 				running = false;
 			}
 		}
+
 	}
 
 	public void render() {
+
 		BufferStrategy bs = this.getBufferStrategy();
 
 		if(bs == null) {
@@ -69,11 +76,13 @@ public class App extends Canvas implements Runnable, MouseListener {
 			g.drawString("Game Over", WIDTH / 2, HEIGHT / 2);
 		}
 		bs.show();
+
 	}
 
 	@Override
 	public void run() {
-		while(true) {
+
+		while (true) {
 			update();
 			render();
 			try {
@@ -82,6 +91,7 @@ public class App extends Canvas implements Runnable, MouseListener {
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	@Override
@@ -98,9 +108,11 @@ public class App extends Canvas implements Runnable, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+
 		clicked = true;
 		pos_x = e.getX();
 		pos_y = e.getY();
+
 	}
 
 	@Override
@@ -116,6 +128,7 @@ public class App extends Canvas implements Runnable, MouseListener {
 	}
 
 	public static void main(String[] args) throws Exception {
+
 		App game = new App();
 		JFrame window = new JFrame("Meu Jogo");
 		window.add(game);
@@ -125,6 +138,7 @@ public class App extends Canvas implements Runnable, MouseListener {
 		window.setVisible(true);
 
 		new Thread(game).start();
-    }
+
+	}
 
 }
