@@ -8,6 +8,7 @@ public class Spawner {
 
 	public int timer = 0;
 	public List<RectObj> rectangles = new ArrayList<RectObj>();
+	public List<Explosion> explosion = new ArrayList<Explosion>();
 
 	public void update() {
 		timer++;
@@ -21,7 +22,27 @@ public class Spawner {
 				rectangles.remove(current);
 				App.life--;
 			}
+			if (App.clicked) {
+				if (App.pos_x >= current.x && App.pos_x < current.x + current.width) {
+					if (App.pos_y >= current.y && App.pos_y < current.y + current.height) {
+						rectangles.remove(current);
+						App.score++;
+						App.clicked = false;
+						for (int n = 0; n < 50; n++) {
+							explosion.add(new Explosion(current.x, current.y, 8, 8, current.color));
+						}
+					}
+				}
+			}
 		}
+		for (int i = 0; i < explosion.size(); i++) {
+			explosion.get(i).update();
+			Explosion explode = explosion.get(i);
+			if (explode.timer >= 60) {
+				explosion.remove(explode);
+			}
+		}
+
 	}
 
 	public void render(Graphics g) {
@@ -33,6 +54,9 @@ public class Spawner {
 			g2.setColor(current.color);
 			g2.fillRect(current.x, current.y, current.width, current.height);
 			g2.rotate(Math.toRadians(-current.rotation), current.x + current.width / 2, current.y + current.height / 2);
+		}
+		for (int i = 0; i < explosion.size(); i++) {
+			explosion.get(i).render(g);
 		}
 
 	}

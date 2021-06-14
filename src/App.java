@@ -1,29 +1,42 @@
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 //import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
-public class App extends Canvas implements Runnable {
+public class App extends Canvas implements Runnable, MouseListener {
 
-	public static final int WIDTH = 1366, HEIGHT = 768;
-	public static int life = 100;
+	public static final int WIDTH = 800, HEIGHT = 600;
+	public static int life;
+	public static int score;
+	public static int pos_x, pos_y;
+	public static boolean clicked = false;
+	public static boolean running = true;
 	public Spawner spawner;
 
 	public App() {
+		life = 100;
+		score = 0;
 		Dimension dimension = new Dimension(WIDTH, HEIGHT);
 		this.setPreferredSize(dimension);
+		this.addMouseListener(this);
 		spawner = new Spawner(); 
 	}
 
 	public void update() {
-		spawner.update();
-		if (life <= 0) {
-			life = 100;
+		if (running) {
+			spawner.update();
+			if (life <= 0) {
+				life = 100;
+				running = false;
+			}
 		}
 	}
 
@@ -38,16 +51,23 @@ public class App extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-/*
-		g.setColor(Color.white);
-		g.setFont(new Font("Arial", Font.BOLD, 24));
-		g.drawString("Pontos: "+score, WIDTH/2, 20);
-*/
-		g.setColor(Color.red);
-		g.fillRect(App.WIDTH / 2 - 100, 20, life * 3, 30);
-		g.setColor(Color.white);
-		g.drawRect(App.WIDTH / 2 - 100, 20, 300, 30);
-		spawner.render(g);
+
+		if (running) {
+			g.setColor(Color.white);
+			g.setFont(new Font("Arial", Font.BOLD, 24));
+			g.drawString("Pontos: "+score, WIDTH - 150, 20);
+			g.setColor(Color.red);
+			g.fillRect(App.WIDTH / 2 - 100, 20, life * 3, 30);
+			g.setColor(Color.white);
+			g.drawRect(App.WIDTH / 2 - 100, 20, 300, 30);
+			spawner.render(g);
+		} else {
+			g.setColor(Color.white);
+			g.setFont(new Font("Arial", Font.BOLD, 24));
+			g.drawString("Pontos: "+score, WIDTH - 150, 20);
+			g.setFont(new Font("Arial", Font.BOLD, 32));
+			g.drawString("Game Over", WIDTH / 2, HEIGHT / 2);
+		}
 		bs.show();
 	}
 
@@ -62,6 +82,37 @@ public class App extends Canvas implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		clicked = true;
+		pos_x = e.getX();
+		pos_y = e.getY();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public static void main(String[] args) throws Exception {
