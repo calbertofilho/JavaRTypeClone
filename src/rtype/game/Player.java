@@ -14,7 +14,7 @@ public class Player {
 	private Image image;
 
 	public Player() {
-		speed = 5;
+		speed = 6;
 		this.pos_x = 100;
 		this.pos_y = 100;
 	}
