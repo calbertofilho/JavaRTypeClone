@@ -46,7 +46,6 @@ public class Level extends JPanel implements ActionListener {
 		repaint();
 	}
 
-	@SuppressWarnings("unused")
 	private class KeyboardAdapter extends KeyAdapter {
 
 		@Override
