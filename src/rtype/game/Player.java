@@ -20,7 +20,7 @@ public class Player {
 	}
 
 	public void load() {
-		ImageIcon reference = new ImageIcon("res\\assets\\player\\normal.png");
+		ImageIcon reference = new ImageIcon("res\\assets\\player\\ship_normal_00.png");
 		image = reference.getImage();
 		width = image.getWidth(null);
 		height = image.getHeight(null);

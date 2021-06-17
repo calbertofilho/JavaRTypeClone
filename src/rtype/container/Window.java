@@ -14,8 +14,8 @@ public class Window extends JFrame {
 	public static String TITLE;
 
 	public Window() {
-		WIDTH = 1024;
-		HEIGHT = 768;
+		WIDTH = 1280;
+		HEIGHT = 800;
 		dimension = new Dimension(WIDTH, HEIGHT);
 		TITLE = "R-Type Like v1.0";
 		setTitle(TITLE);

@@ -23,7 +23,7 @@ public class Level extends JPanel implements ActionListener {
 	public Level() {
 		setFocusable(true);
 		setDoubleBuffered(true);
-		ImageIcon reference = new ImageIcon("res\\assets\\bg\\background.png");
+		ImageIcon reference = new ImageIcon("res\\assets\\bg\\deep-space.jpg");
 		background = reference.getImage();
 		player = new Player();
 		player.load();
