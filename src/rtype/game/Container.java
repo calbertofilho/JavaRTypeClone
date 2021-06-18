@@ -1,19 +1,19 @@
-package rtype.container;
+package rtype.game;
 
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import rtype.game.Level;
+import rtype.game.stages.Level;
 
 @SuppressWarnings("serial")
-public class Window extends JFrame {
+public class Container extends JFrame {
 
 	public static int WIDTH, HEIGHT;
 	public static Dimension dimension;
 	public static String TITLE;
 
-	public Window() {
+	public Container() {
 		WIDTH = 1280;
 		HEIGHT = 800;
 		dimension = new Dimension(WIDTH, HEIGHT);
@@ -27,6 +27,14 @@ public class Window extends JFrame {
 		pack();
 		add(new Level());
 		setVisible(true);
+	}
+
+	public static int getWIDTH() {
+		return WIDTH;
+	}
+
+	public static int getHEIGHT() {
+		return HEIGHT;
 	}
 
 }

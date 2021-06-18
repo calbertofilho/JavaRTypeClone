@@ -1,11 +1,11 @@
 package rtype;
 
-import rtype.container.Window;
+import rtype.game.Container;
 
 public class App {
 
 	public static void main(String[] args) {
-		new Window(); 
+		new Container(); 
 	}
 
 }

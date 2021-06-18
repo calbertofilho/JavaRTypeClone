@@ -1,4 +1,4 @@
-package rtype.game;
+package rtype.game.stages;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,16 +7,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import rtype.game.player.Ship;
+import rtype.game.player.Shot;
+
 @SuppressWarnings("serial")
 public class Level extends JPanel implements ActionListener {
 
 	private Image background;
-	private Player player;
+	private Ship player;
 	private int speed;
 	private Timer timer;
 
@@ -25,7 +29,7 @@ public class Level extends JPanel implements ActionListener {
 		setDoubleBuffered(true);
 		ImageIcon reference = new ImageIcon("res\\assets\\bg\\deep-space.jpg");
 		background = reference.getImage();
-		player = new Player();
+		player = new Ship();
 		player.load();
 		speed = 5;
 		addKeyListener(new KeyboardAdapter());
@@ -37,12 +41,27 @@ public class Level extends JPanel implements ActionListener {
 		Graphics2D graphics = (Graphics2D) g;
 		graphics.drawImage(background, 0, 0, null);
 		graphics.drawImage(player.getImage(), player.getPos_x(), player.getPos_y(), this);
+		List<Shot> shots = player.getShots();
+		for (int i = 0; i < shots.size(); i++) {
+			Shot current = shots.get(i);
+			current.load();
+			graphics.drawImage(current.getImage(), current.getPos_x(), current.getPos_y(), this);
+		}
 		graphics.dispose();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		player.update();
+		List<Shot> shots = player.getShots();
+		for (int i = 0; i < shots.size(); i++) {
+			Shot current = shots.get(i);
+			if (current.isVisible()) {
+				current.update();
+			} else {
+				shots.remove(i);
+			}
+		}
 		repaint();
 	}
 
