@@ -1,36 +1,26 @@
-package rtype.game.player;
+package rtype.game.enemies;
 
 import java.awt.Image;
 
-import javax.swing.ImageIcon;
-
-import rtype.game.container.Window;
-
-public class Shot {
+public class Enemy {
 
 	private static int speed;
-	private int pos_x, pos_y;
-	private int width, height;
+	protected int pos_x, pos_y;
+	protected int width;
+	protected int height;
 	private boolean isVisible;
-	private Image image;
+	protected Image image;
 
-	public Shot(int x, int y) {
-		speed = 5;
+	public Enemy(int x, int y) {
 		pos_x = x;
 		pos_y = y;
 		isVisible = true;
 	}
 
-	public void load() {
-		ImageIcon reference = new ImageIcon("res\\assets\\player\\shot-red.png");
-		image = reference.getImage();
-		width = image.getWidth(null);
-		height = image.getHeight(null);
-	}
+	public void load() {}
 
 	public void update() {
-		pos_x += speed;
-		if (pos_x > (Window.WIDTH - (this.width / 2))) {
+		if (pos_x < 0) {
 			isVisible = false;
 		}
 	}
@@ -40,7 +30,7 @@ public class Shot {
 	}
 
 	public static void setSpeed(int speed) {
-		Shot.speed = speed;
+		Enemy.speed = speed;
 	}
 
 	public int getPos_x() {
