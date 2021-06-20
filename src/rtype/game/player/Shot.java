@@ -22,7 +22,7 @@ public class Shot {
 	}
 
 	public void load() {
-		ImageIcon reference = new ImageIcon("res\\assets\\player\\shot-red.png");
+		ImageIcon reference = new ImageIcon("res\\images\\assets\\player\\shot-red.png");
 		image = reference.getImage();
 		width = image.getWidth(null);
 		height = image.getHeight(null);

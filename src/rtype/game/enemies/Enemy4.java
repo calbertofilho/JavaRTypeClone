@@ -15,7 +15,7 @@ public class Enemy4 extends Enemy {
 
 	@Override
 	public void load() {
-		ImageIcon reference = new ImageIcon("res\\assets\\enemies\\enemy4.png");
+		ImageIcon reference = new ImageIcon("res\\images\\assets\\enemies\\enemy4.gif");
 		super.image = reference.getImage();
 		super.width = image.getWidth(null);
 		super.height = image.getHeight(null);

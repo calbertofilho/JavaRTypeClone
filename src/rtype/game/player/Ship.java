@@ -24,7 +24,7 @@ public class Ship {
 	}
 
 	public void load() {
-		ImageIcon reference = new ImageIcon("res\\assets\\player\\player_ship-normal_flight.gif");
+		ImageIcon reference = new ImageIcon("res\\images\\assets\\player\\player_ship-normal_flight.gif");
 		image = reference.getImage();
 		width = image.getWidth(null);
 		height = image.getHeight(null);
