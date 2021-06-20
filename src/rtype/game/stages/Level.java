@@ -39,7 +39,7 @@ public class Level extends JPanel implements ActionListener {
 	private List<Enemy> enemies;
 	private int maxEnemies;
 	private List<Stars> stars;
-	private int maxStars;
+	private int maxObjects;
 
 	public Level() {
 		setFocusable(true);
@@ -83,19 +83,19 @@ public class Level extends JPanel implements ActionListener {
 	public void initializeScenery() {
 		random = new Random();
 		stars = new ArrayList<Stars>();
-		int star;
-		for (int i = 0; i < maxStars; i++) {
+		int object;
+		for (int i = 0; i < maxObjects; i++) {
 			int x = (int) (random.nextInt(Window.WIDTH));
 			int y = (int) (random.nextInt(Window.HEIGHT - 30));
-			star = random.nextInt(2) + 1;
-			if (star == 1) {
+			object = random.nextInt(2) + 1;
+			if (object == 1) {
 				stars.add(new Stars(x, y, 4, new ImageIcon("res\\images\\assets\\sceneries\\star7.png")));
 			} else {
 				stars.add(new Stars(x, y, 3, new ImageIcon("res\\images\\assets\\sceneries\\star13.png")));
 			}
-			if (i > (int) Math.round(0.90 * maxStars)) {
-				star = random.nextInt(2) + 1;
-				if (star == 1) {
+			if (i > (int) Math.round(0.90 * maxObjects)) {
+				object = random.nextInt(2) + 1;
+				if (object == 1) {
 					stars.add(new Stars(x, y, 2, new ImageIcon("res\\images\\assets\\sceneries\\star28.png")));
 				} else {
 					stars.add(new Stars(x, y, 1, new ImageIcon("res\\images\\assets\\sceneries\\star35.png")));
