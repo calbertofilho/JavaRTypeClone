@@ -25,6 +25,8 @@ import rtype.game.enemies.BugShip;
 import rtype.game.enemies.FlyShip;
 import rtype.game.player.Ship;
 import rtype.game.player.Shot;
+import rtype.game.sceneries.Asteroids;
+import rtype.game.sceneries.Scenery;
 import rtype.game.sceneries.Stars;
 
 @SuppressWarnings("serial")
@@ -38,7 +40,7 @@ public class Level extends JPanel implements ActionListener {
 	private Random random;
 	private List<Enemy> enemies;
 	private int maxEnemies;
-	private List<Stars> stars;
+	private List<Scenery> sceneries;
 	private int maxObjects;
 
 	public Level() {
@@ -50,7 +52,7 @@ public class Level extends JPanel implements ActionListener {
 		player.load();
 		speed = 5;
 		maxEnemies = 100;
-		maxStars = 250;
+		maxObjects = 300;
 		addKeyListener(new KeyboardAdapter());
 		timer = new Timer(speed, this);
 		timer.start();
@@ -82,24 +84,22 @@ public class Level extends JPanel implements ActionListener {
 
 	public void initializeScenery() {
 		random = new Random();
-		stars = new ArrayList<Stars>();
+		sceneries = new ArrayList<Scenery>();
 		int object;
 		for (int i = 0; i < maxObjects; i++) {
 			int x = (int) (random.nextInt(Window.WIDTH));
 			int y = (int) (random.nextInt(Window.HEIGHT - 30));
 			object = random.nextInt(2) + 1;
 			if (object == 1) {
-				stars.add(new Stars(x, y, 4, new ImageIcon("res\\images\\assets\\sceneries\\star7.png")));
+				sceneries.add(new Stars(x, y, 5, new ImageIcon("res\\images\\assets\\sceneries\\star7.png")));
 			} else {
-				stars.add(new Stars(x, y, 3, new ImageIcon("res\\images\\assets\\sceneries\\star13.png")));
+				sceneries.add(new Stars(x, y, 4, new ImageIcon("res\\images\\assets\\sceneries\\star13.png")));
 			}
-			if (i > (int) Math.round(0.90 * maxObjects)) {
-				object = random.nextInt(2) + 1;
-				if (object == 1) {
-					stars.add(new Stars(x, y, 2, new ImageIcon("res\\images\\assets\\sceneries\\star28.png")));
-				} else {
-					stars.add(new Stars(x, y, 1, new ImageIcon("res\\images\\assets\\sceneries\\star35.png")));
-				}				
+			if (i > (int) Math.round(0.98 * maxObjects)) {
+				sceneries.add(new Asteroids(x, y, 3, 1, new ImageIcon("res\\images\\assets\\sceneries\\asteroid30.png")));
+			}
+			if (i > (int) Math.round(0.99 * maxObjects)) {
+				sceneries.add(new Asteroids(x, y, 1, 3, new ImageIcon("res\\images\\assets\\sceneries\\asteroid52.png")));
 			}
 		}
 	}
@@ -108,11 +108,17 @@ public class Level extends JPanel implements ActionListener {
 		Graphics2D graphics = (Graphics2D) g;
 		if (running) {
 			graphics.drawImage(background, 0, 0, null);
-			Stars star;
-			for (int i = 0; i < stars.size(); i++) {
-				star = stars.get(i);
-				star.load();
-				graphics.drawImage(star.getImage(), star.getPos_x(), star.getPos_y(), this);
+			Scenery object;
+			for (int i = 0; i < sceneries.size(); i++) {
+				object = sceneries.get(i);
+				object.load();
+				if (object instanceof Asteroids) {
+					graphics.rotate(Math.toRadians(object.getRotation()), object.getPos_x() + object.getWidth() / 2, object.getPos_y() + object.getHeight() / 2);
+					graphics.drawImage(object.getImage(), object.getPos_x(), object.getPos_y(), this);
+					graphics.rotate(Math.toRadians(-object.getRotation()), object.getPos_x() + object.getWidth() / 2, object.getPos_y() + object.getHeight() / 2);
+				} else {
+					graphics.drawImage(object.getImage(), object.getPos_x(), object.getPos_y(), this);
+				}
 			}
 			graphics.drawImage(player.getImage(), player.getPos_x(), player.getPos_y(), this);
 			List<Shot> shots = player.getShots();
@@ -138,13 +144,13 @@ public class Level extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		player.update();
-		Stars star;
-		for (int i = 0; i < stars.size(); i++) {
-			star = stars.get(i);
-			if (star.isVisible()) {
-				star.update();
+		Scenery object;
+		for (int i = 0; i < sceneries.size(); i++) {
+			object = sceneries.get(i);
+			if (object.isVisible()) {
+				object.update();
 			} else {
-				stars.remove(i);
+				sceneries.remove(i);
 			}
 		}
 		List<Shot> shots = player.getShots();

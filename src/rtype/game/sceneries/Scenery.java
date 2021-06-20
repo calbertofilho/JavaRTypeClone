@@ -7,12 +7,14 @@ public class Scenery {
 	private static int speed;
 	private int pos_x, pos_y;
 	private int width, height;
+	public int rotation;
 	protected boolean isVisible;
 	private Image image;
 
 	public Scenery(int x, int y) {
 		pos_x = x;
 		pos_y = y;
+		rotation = 0;
 		isVisible = true;
 	}
 
@@ -53,6 +55,14 @@ public class Scenery {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public int getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
 	}
 
 	public boolean isVisible() {
