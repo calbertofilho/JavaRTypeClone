@@ -54,15 +54,14 @@ public class Level extends JPanel implements ActionListener {
 		addKeyListener(new KeyboardAdapter());
 		timer = new Timer(speed, this);
 		timer.start();
-		initializeScenery();
 		initializeEnemies();
+		initializeScenery();
 		running = true;
 	}
 
 	public void initializeEnemies() {
 		random = new Random();
 		enemies = new ArrayList<Enemy>();
-		System.out.println(maxEnemies);
 		for (int i = 0; i < maxEnemies; i++) {
 			int x = (int) (random.nextInt(20000) + Window.WIDTH);
 			int y = (int) (random.nextInt(Window.HEIGHT - 30));
@@ -84,22 +83,22 @@ public class Level extends JPanel implements ActionListener {
 	public void initializeScenery() {
 		random = new Random();
 		stars = new ArrayList<Stars>();
-		int enemy;
+		int star;
 		for (int i = 0; i < maxStars; i++) {
 			int x = (int) (random.nextInt(Window.WIDTH));
 			int y = (int) (random.nextInt(Window.HEIGHT - 30));
-			enemy = random.nextInt(2) + 1;
-			if (enemy == 1) {
-				stars.add(new Stars(x, y, 4, new ImageIcon("res\\images\\assets\\stars\\star7.png")));
+			star = random.nextInt(2) + 1;
+			if (star == 1) {
+				stars.add(new Stars(x, y, 4, new ImageIcon("res\\images\\assets\\sceneries\\star7.png")));
 			} else {
-				stars.add(new Stars(x, y, 3, new ImageIcon("res\\images\\assets\\stars\\star13.png")));
+				stars.add(new Stars(x, y, 3, new ImageIcon("res\\images\\assets\\sceneries\\star13.png")));
 			}
 			if (i > (int) Math.round(0.90 * maxStars)) {
-				enemy = random.nextInt(2) + 1;
-				if (enemy == 1) {
-					stars.add(new Stars(x, y, 2, new ImageIcon("res\\images\\assets\\stars\\star28.png")));
+				star = random.nextInt(2) + 1;
+				if (star == 1) {
+					stars.add(new Stars(x, y, 2, new ImageIcon("res\\images\\assets\\sceneries\\star28.png")));
 				} else {
-					stars.add(new Stars(x, y, 1, new ImageIcon("res\\images\\assets\\stars\\star35.png")));
+					stars.add(new Stars(x, y, 1, new ImageIcon("res\\images\\assets\\sceneries\\star35.png")));
 				}				
 			}
 		}
@@ -107,22 +106,25 @@ public class Level extends JPanel implements ActionListener {
 
 	public void paint(Graphics g) {
 		Graphics2D graphics = (Graphics2D) g;
-		if(running) {
+		if (running) {
 			graphics.drawImage(background, 0, 0, null);
+			Stars star;
 			for (int i = 0; i < stars.size(); i++) {
-				Stars star = stars.get(i);
+				star = stars.get(i);
 				star.load();
 				graphics.drawImage(star.getImage(), star.getPos_x(), star.getPos_y(), this);
 			}
 			graphics.drawImage(player.getImage(), player.getPos_x(), player.getPos_y(), this);
 			List<Shot> shots = player.getShots();
+			Shot current;
 			for (int o = 0; o < shots.size(); o++) {
-				Shot current = shots.get(o);
+				current = shots.get(o);
 				current.load();
 				graphics.drawImage(current.getImage(), current.getPos_x(), current.getPos_y(), this);
 			}
+			Enemy enemy;
 			for (int n = 0; n < enemies.size(); n++) {
-				Enemy enemy = enemies.get(n);
+				enemy = enemies.get(n);
 				enemy.load();
 				graphics.drawImage(enemy.getImage(), enemy.getPos_x(), enemy.getPos_y(), this);
 			}
@@ -136,8 +138,9 @@ public class Level extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		player.update();
+		Stars star;
 		for (int i = 0; i < stars.size(); i++) {
-			Stars star = stars.get(i);
+			star = stars.get(i);
 			if (star.isVisible()) {
 				star.update();
 			} else {
@@ -145,21 +148,22 @@ public class Level extends JPanel implements ActionListener {
 			}
 		}
 		List<Shot> shots = player.getShots();
+		Shot current;
 		for (int o = 0; o < shots.size(); o++) {
-			Shot current = shots.get(o);
+			current = shots.get(o);
 			if (current.isVisible()) {
 				current.update();
 			} else {
 				shots.remove(o);
 			}
 		}
+		Enemy enemy;
 		for (int n = 0; n < enemies.size(); n++) {
-			Enemy enemy = enemies.get(n);
+			enemy = enemies.get(n);
 			if (enemy.isVisible()) {
 				enemy.update();
 			} else {
 				enemies.remove(n);
-				System.out.println(enemies.size());
 			}
 		}
 		testColisions();

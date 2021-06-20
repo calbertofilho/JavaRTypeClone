@@ -2,7 +2,7 @@ package rtype.game.sceneries;
 
 import java.awt.Image;
 
-public class FlyingObjects {
+public class Scenery {
 
 	private static int speed;
 	private int pos_x, pos_y;
@@ -10,7 +10,7 @@ public class FlyingObjects {
 	protected boolean isVisible;
 	private Image image;
 
-	public FlyingObjects(int x, int y) {
+	public Scenery(int x, int y) {
 		pos_x = x;
 		pos_y = y;
 		isVisible = true;
@@ -28,7 +28,7 @@ public class FlyingObjects {
 	}
 
 	public static void setSpeed(int speed) {
-		FlyingObjects.speed = speed;
+		Scenery.speed = speed;
 	}
 
 	public void setPos_x(int pos_x) {

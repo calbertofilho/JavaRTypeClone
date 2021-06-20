@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 import rtype.game.container.Window;
 
-public class Stars extends FlyingObjects {
+public class Stars extends Scenery {
 
 	private ImageIcon objectImageIcon;
 	private Random random;
