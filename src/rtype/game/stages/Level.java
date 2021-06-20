@@ -51,12 +51,12 @@ public class Level extends JPanel implements ActionListener {
 	}
 
 	public void initializeEnemies() {
-		int coordinates[] = new int[maxEnemies];
 		Random tmp = new Random();
 		enemies = new ArrayList<Enemy>();
-		for (int i = 0; i < coordinates.length; i++) {
-			int x = (int) (tmp.nextInt(8000) + Window.WIDTH);
-			int y = (int) (tmp.nextInt(Window.HEIGHT - 30) + 30);
+		System.out.println(maxEnemies);
+		for (int i = 0; i < maxEnemies; i++) {
+			int x = (int) (tmp.nextInt(20000) + Window.WIDTH);
+			int y = (int) (tmp.nextInt(Window.HEIGHT - 30));
 			int enemy = tmp.nextInt(5) + 1;
 			if (enemy == 1) {
 				enemies.add(new Enemy1(x, y));
@@ -108,6 +108,7 @@ public class Level extends JPanel implements ActionListener {
 				enemy.update();
 			} else {
 				enemies.remove(n);
+				System.out.println(enemies.size());
 			}
 		}
 		repaint();

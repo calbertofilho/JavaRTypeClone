@@ -20,7 +20,7 @@ public class Enemy {
 	public void load() {}
 
 	public void update() {
-		if (pos_x < 0) {
+		if (pos_x < -50) {
 			isVisible = false;
 		}
 	}
