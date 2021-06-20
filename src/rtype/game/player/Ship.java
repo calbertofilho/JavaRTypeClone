@@ -1,6 +1,7 @@
 package rtype.game.player;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +16,13 @@ public class Ship {
 	private int width, height;
 	private Image image;
 	private List<Shot> shots;
+	private boolean isVisible;
 
 	public Ship() {
 		speed = 6;
 		pos_x = 100;
 		pos_y = 100;
+		isVisible = true;
 		shots = new ArrayList<Shot>();
 	}
 
@@ -37,6 +40,10 @@ public class Ship {
 
 	public void shoot() {
 		shots.add(new Shot(pos_x + (width / 2), (pos_y + (height / 2))));
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(pos_x, pos_y, width, height);
 	}
 
 	public void keyPressed(KeyEvent key) {
@@ -96,6 +103,14 @@ public class Ship {
 
 	public List<Shot> getShots() {
 		return shots;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 
 }

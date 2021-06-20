@@ -3,6 +3,7 @@ package rtype.game.stages;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -17,13 +18,14 @@ import javax.swing.Timer;
 
 import rtype.game.container.Window;
 import rtype.game.enemies.Enemy;
-import rtype.game.enemies.Enemy1;
-import rtype.game.enemies.Enemy2;
-import rtype.game.enemies.Enemy3;
-import rtype.game.enemies.Enemy4;
-import rtype.game.enemies.Enemy5;
+import rtype.game.enemies.SpaceShip;
+import rtype.game.enemies.CrabShip;
+import rtype.game.enemies.JetShip;
+import rtype.game.enemies.BugShip;
+import rtype.game.enemies.FlyShip;
 import rtype.game.player.Ship;
 import rtype.game.player.Shot;
+import rtype.game.sceneries.Stars;
 
 @SuppressWarnings("serial")
 public class Level extends JPanel implements ActionListener {
@@ -32,8 +34,12 @@ public class Level extends JPanel implements ActionListener {
 	private Ship player;
 	private int speed;
 	private Timer timer;
+	private boolean running;
+	private Random random;
 	private List<Enemy> enemies;
 	private int maxEnemies;
+	private List<Stars> stars;
+	private int maxStars;
 
 	public Level() {
 		setFocusable(true);
@@ -44,48 +50,85 @@ public class Level extends JPanel implements ActionListener {
 		player.load();
 		speed = 5;
 		maxEnemies = 100;
+		maxStars = 250;
 		addKeyListener(new KeyboardAdapter());
 		timer = new Timer(speed, this);
 		timer.start();
+		initializeScenery();
 		initializeEnemies();
+		running = true;
 	}
 
 	public void initializeEnemies() {
-		Random tmp = new Random();
+		random = new Random();
 		enemies = new ArrayList<Enemy>();
 		System.out.println(maxEnemies);
 		for (int i = 0; i < maxEnemies; i++) {
-			int x = (int) (tmp.nextInt(20000) + Window.WIDTH);
-			int y = (int) (tmp.nextInt(Window.HEIGHT - 30));
-			int enemy = tmp.nextInt(5) + 1;
+			int x = (int) (random.nextInt(20000) + Window.WIDTH);
+			int y = (int) (random.nextInt(Window.HEIGHT - 30));
+			int enemy = random.nextInt(5) + 1;
 			if (enemy == 1) {
-				enemies.add(new Enemy1(x, y));
+				enemies.add(new SpaceShip(x, y));
 			} else if (enemy == 2) {
-				enemies.add(new Enemy2(x, y));
+				enemies.add(new CrabShip(x, y));
 			} else if (enemy == 3) {
-				enemies.add(new Enemy3(x, y));
+				enemies.add(new JetShip(x, y));
 			} else if (enemy == 4) {
-				enemies.add(new Enemy4(x, y));
+				enemies.add(new BugShip(x, y));
 			} else {
-				enemies.add(new Enemy5(x, y));
+				enemies.add(new FlyShip(x, y));
+			}
+		}
+	}
+
+	public void initializeScenery() {
+		random = new Random();
+		stars = new ArrayList<Stars>();
+		int enemy;
+		for (int i = 0; i < maxStars; i++) {
+			int x = (int) (random.nextInt(Window.WIDTH));
+			int y = (int) (random.nextInt(Window.HEIGHT - 30));
+			enemy = random.nextInt(2) + 1;
+			if (enemy == 1) {
+				stars.add(new Stars(x, y, 4, new ImageIcon("res\\images\\assets\\stars\\star7.png")));
+			} else {
+				stars.add(new Stars(x, y, 3, new ImageIcon("res\\images\\assets\\stars\\star13.png")));
+			}
+			if (i > (int) Math.round(0.90 * maxStars)) {
+				enemy = random.nextInt(2) + 1;
+				if (enemy == 1) {
+					stars.add(new Stars(x, y, 2, new ImageIcon("res\\images\\assets\\stars\\star28.png")));
+				} else {
+					stars.add(new Stars(x, y, 1, new ImageIcon("res\\images\\assets\\stars\\star35.png")));
+				}				
 			}
 		}
 	}
 
 	public void paint(Graphics g) {
 		Graphics2D graphics = (Graphics2D) g;
-		graphics.drawImage(background, 0, 0, null);
-		graphics.drawImage(player.getImage(), player.getPos_x(), player.getPos_y(), this);
-		List<Shot> shots = player.getShots();
-		for (int i = 0; i < shots.size(); i++) {
-			Shot current = shots.get(i);
-			current.load();
-			graphics.drawImage(current.getImage(), current.getPos_x(), current.getPos_y(), this);
-		}
-		for (int n = 0; n < enemies.size(); n++) {
-			Enemy enemy = enemies.get(n);
-			enemy.load();
-			graphics.drawImage(enemy.getImage(), enemy.getPos_x(), enemy.getPos_y(), this);
+		if(running) {
+			graphics.drawImage(background, 0, 0, null);
+			for (int i = 0; i < stars.size(); i++) {
+				Stars star = stars.get(i);
+				star.load();
+				graphics.drawImage(star.getImage(), star.getPos_x(), star.getPos_y(), this);
+			}
+			graphics.drawImage(player.getImage(), player.getPos_x(), player.getPos_y(), this);
+			List<Shot> shots = player.getShots();
+			for (int o = 0; o < shots.size(); o++) {
+				Shot current = shots.get(o);
+				current.load();
+				graphics.drawImage(current.getImage(), current.getPos_x(), current.getPos_y(), this);
+			}
+			for (int n = 0; n < enemies.size(); n++) {
+				Enemy enemy = enemies.get(n);
+				enemy.load();
+				graphics.drawImage(enemy.getImage(), enemy.getPos_x(), enemy.getPos_y(), this);
+			}
+		} else {
+			ImageIcon gameOver = new ImageIcon("res\\images\\assets\\messages\\game-over.png");
+			graphics.drawImage(gameOver.getImage(), ((Window.WIDTH / 2) - (gameOver.getIconWidth() / 2)), ((Window.HEIGHT / 2) - (gameOver.getIconHeight() / 2)), null);
 		}
 		graphics.dispose();
 	}
@@ -93,13 +136,21 @@ public class Level extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		player.update();
+		for (int i = 0; i < stars.size(); i++) {
+			Stars star = stars.get(i);
+			if (star.isVisible()) {
+				star.update();
+			} else {
+				stars.remove(i);
+			}
+		}
 		List<Shot> shots = player.getShots();
-		for (int i = 0; i < shots.size(); i++) {
-			Shot current = shots.get(i);
+		for (int o = 0; o < shots.size(); o++) {
+			Shot current = shots.get(o);
 			if (current.isVisible()) {
 				current.update();
 			} else {
-				shots.remove(i);
+				shots.remove(o);
 			}
 		}
 		for (int n = 0; n < enemies.size(); n++) {
@@ -111,7 +162,35 @@ public class Level extends JPanel implements ActionListener {
 				System.out.println(enemies.size());
 			}
 		}
+		testColisions();
 		repaint();
+	}
+
+	public void testColisions() {
+		Rectangle shipBounds = player.getBounds();
+		Rectangle enemyBounds, shotBounds;
+		List<Shot> shots = player.getShots();
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy enemy = enemies.get(i);
+			enemyBounds = enemy.getBounds();
+			if (shipBounds.intersects(enemyBounds)) {
+				player.setVisible(false);
+				enemy.setVisible(false);
+				running = false;
+			}
+		}
+		for (int n = 0; n < shots.size(); n++) {
+			Shot current = shots.get(n);
+			shotBounds = current.getBounds(); 
+			for (int z = 0; z < enemies.size(); z++) {
+				Enemy enemy = enemies.get(z);
+				enemyBounds = enemy.getBounds();
+				if (shotBounds.intersects(enemyBounds)) {
+					enemy.setVisible(false);
+					current.setVisible(false);
+				}
+			}
+		}
 	}
 
 	private class KeyboardAdapter extends KeyAdapter {

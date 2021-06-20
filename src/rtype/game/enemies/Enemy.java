@@ -1,6 +1,7 @@
 package rtype.game.enemies;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 
 public class Enemy {
 
@@ -23,6 +24,10 @@ public class Enemy {
 		if (pos_x < -50) {
 			isVisible = false;
 		}
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(pos_x, pos_y, width, height);
 	}
 
 	public static int getSpeed() {
@@ -51,6 +56,10 @@ public class Enemy {
 
 	public boolean isVisible() {
 		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 
 	public Image getImage() {

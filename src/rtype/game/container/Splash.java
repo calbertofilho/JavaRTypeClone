@@ -23,7 +23,7 @@ public class Splash extends JFrame {
 	}
 
 	public void load() {
-		ImageIcon reference = new ImageIcon("res\\images\\assets\\bg\\splash-screen.png");
+		ImageIcon reference = new ImageIcon("res\\images\\assets\\messages\\splash-screen.png");
 		imgSplash = new JLabel(reference);
 		imgSplash.setBounds(0, 0, Window.WIDTH, Window.HEIGHT);
 	}

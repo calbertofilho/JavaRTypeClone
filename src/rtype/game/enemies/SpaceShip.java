@@ -4,11 +4,11 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-public class Enemy1 extends Enemy {
+public class SpaceShip extends Enemy {
 
 	private int speed;
 
-	public Enemy1(int x, int y) {
+	public SpaceShip(int x, int y) {
 		super(x, y);
 		speed = new Random().nextInt(8) + 1;
 	}
