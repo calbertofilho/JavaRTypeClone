@@ -1,5 +1,6 @@
 package rtype.game.stages;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -42,6 +43,7 @@ public class Level extends JPanel implements ActionListener {
 	private int maxEnemies;
 	private List<Scenery> sceneries;
 	private int maxObjects;
+	private String text1, text2;
 
 	public Level() {
 		setFocusable(true);
@@ -113,9 +115,13 @@ public class Level extends JPanel implements ActionListener {
 				object = sceneries.get(i);
 				object.load();
 				if (object instanceof Asteroids) {
-					graphics.rotate(Math.toRadians(object.getRotation()), object.getPos_x() + object.getWidth() / 2, object.getPos_y() + object.getHeight() / 2);
-					graphics.drawImage(object.getImage(), object.getPos_x(), object.getPos_y(), this);
-					graphics.rotate(Math.toRadians(-object.getRotation()), object.getPos_x() + object.getWidth() / 2, object.getPos_y() + object.getHeight() / 2);
+					if (object.getHeight() == 30)
+						graphics.drawImage(object.getImage(), object.getPos_x(), object.getPos_y(), this);
+					else {
+						graphics.rotate(Math.toRadians(object.getRotation()), object.getPos_x() + object.getWidth() / 2, object.getPos_y() + object.getHeight() / 2);
+						graphics.drawImage(object.getImage(), object.getPos_x(), object.getPos_y(), this);
+						graphics.rotate(Math.toRadians(-object.getRotation()), object.getPos_x() + object.getWidth() / 2, object.getPos_y() + object.getHeight() / 2);
+					}
 				} else {
 					graphics.drawImage(object.getImage(), object.getPos_x(), object.getPos_y(), this);
 				}
@@ -134,6 +140,13 @@ public class Level extends JPanel implements ActionListener {
 				enemy.load();
 				graphics.drawImage(enemy.getImage(), enemy.getPos_x(), enemy.getPos_y(), this);
 			}
+			text1 = "Inimigos: " + enemies.size();
+			text2 = "Disparos: " + shots.size();
+			graphics.setFont(getFont());
+			graphics.setColor(Color.RED);
+			graphics.drawString(text1, Window.WIDTH - graphics.getFontMetrics().stringWidth(text1) - 30, (graphics.getFontMetrics().getHeight() * 0) + 20);
+			graphics.setColor(Color.YELLOW);
+			graphics.drawString(text2, Window.WIDTH - graphics.getFontMetrics().stringWidth(text2) - 30, (graphics.getFontMetrics().getHeight() * 1) + 20);
 		} else {
 			ImageIcon gameOver = new ImageIcon("res\\images\\assets\\messages\\game-over.png");
 			graphics.drawImage(gameOver.getImage(), ((Window.WIDTH / 2) - (gameOver.getIconWidth() / 2)), ((Window.HEIGHT / 2) - (gameOver.getIconHeight() / 2)), null);
